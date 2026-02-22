@@ -1,0 +1,92 @@
+{
+  "models": {
+    "providers": {
+      "openai-codex-b1": {
+        "baseUrl": "https://api.openai.com/v1",
+        "apiKey": "${OPENAI_KEY_B1}",
+        "api": "openai-completions",
+        "models": [{ "id": "gpt-5.3-codex", "name": "GPT-5.3 Codex (Operator)", "reasoning": true, "input": ["text", "image"], "contextWindow": 200000, "maxTokens": 32768 }]
+      },
+      "openai-codex-b2": {
+        "baseUrl": "https://api.openai.com/v1",
+        "apiKey": "${OPENAI_KEY_B2}",
+        "api": "openai-completions",
+        "models": [{ "id": "gpt-5.3-codex", "name": "GPT-5.3 Codex (Trader)", "reasoning": true, "input": ["text", "image"], "contextWindow": 200000, "maxTokens": 32768 }]
+      },
+      "openai-codex-b3": {
+        "baseUrl": "https://api.openai.com/v1",
+        "apiKey": "${OPENAI_KEY_B3}",
+        "api": "openai-completions",
+        "models": [{ "id": "gpt-5.3-codex", "name": "GPT-5.3 Codex (Guardian)", "reasoning": true, "input": ["text", "image"], "contextWindow": 200000, "maxTokens": 32768 }]
+      },
+      "kimi-fallback": {
+        "baseUrl": "https://api.moonshot.cn/v1",
+        "apiKey": "${KIMI_KEY_SHARED}",
+        "api": "openai-completions",
+        "models": [{ "id": "kimi-k2.5", "name": "Kimi K2.5 (Fallback)", "reasoning": false, "input": ["text"], "contextWindow": 128000, "maxTokens": 8192 }]
+      }
+    }
+  },
+
+  "agents": {
+    "defaults": {
+      "heartbeat": { "enabled": true, "interval": 300000 }
+    },
+    "list": [
+      {
+        "id": "operator",
+        "name": "Operator",
+        "workspace": "./agents/operator",
+        "model": "openai-codex-b1/gpt-5.3-codex",
+        "skills": ["github", "discord"],
+        "identity": { "name": "Operator", "emoji": "📋" }
+      },
+      {
+        "id": "trader",
+        "name": "Trader",
+        "workspace": "./agents/trader",
+        "model": "openai-codex-b2/gpt-5.3-codex",
+        "skills": ["github", "discord"],
+        "identity": { "name": "Trader", "emoji": "📡" }
+      },
+      {
+        "id": "guardian",
+        "name": "Guardian",
+        "workspace": "./agents/guardian",
+        "model": "openai-codex-b3/gpt-5.3-codex",
+        "skills": ["github", "discord"],
+        "identity": { "name": "Guardian", "emoji": "🚨" }
+      }
+    ]
+  },
+
+  "bindings": [
+    { "agentId": "operator", "match": { "channel": "discord", "guildId": "${DISCORD_GUILD_ID}", "peer": { "kind": "group", "id": "${CH_B_OPS}" } } },
+    { "agentId": "trader",   "match": { "channel": "discord", "guildId": "${DISCORD_GUILD_ID}", "peer": { "kind": "group", "id": "${CH_B_DESK}" } } },
+    { "agentId": "guardian",  "match": { "channel": "discord", "guildId": "${DISCORD_GUILD_ID}", "peer": { "kind": "group", "id": "${CH_B_RISK}" } } },
+    { "agentId": "operator", "match": { "channel": "discord", "guildId": "${DISCORD_GUILD_ID}", "peer": { "kind": "group", "id": "${CH_B_REPORT}" } } }
+  ],
+
+  "channels": {
+    "discord": {
+      "token": "${DISCORD_BOT_TOKEN_B}",
+      "groupPolicy": "allowlist",
+      "allowBots": false,
+      "guilds": {
+        "${DISCORD_GUILD_ID}": {
+          "slug": "quant-evo-b",
+          "requireMention": false
+        }
+      }
+    }
+  },
+
+  "cron": {
+    "enabled": true,
+    "maxConcurrentRuns": 2
+  },
+
+  "skills": {
+    "allowBundled": ["discord", "github"]
+  }
+}

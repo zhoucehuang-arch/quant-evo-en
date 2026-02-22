@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "updated_at": "2026-02-23T00:00:00Z",
+  "arxiv": {
+    "categories": ["q-fin.CP", "q-fin.PM", "q-fin.TR", "q-fin.ST", "q-fin.RM", "cs.AI", "cs.LG", "cs.MA"],
+    "rss_base": "https://rss.arxiv.org/rss/",
+    "scan_interval_hours": 6
+  },
+  "ssrn": {
+    "categories": ["Quantitative Finance", "Financial Economics"],
+    "scan_interval_hours": 12
+  },
+  "blogs": [
+    { "name": "AQR Capital", "url": "https://www.aqr.com/Insights", "scan_interval_hours": 24 },
+    { "name": "Two Sigma Insights", "url": "https://www.twosigma.com/insights/", "scan_interval_hours": 24 },
+    { "name": "Man Group Research", "url": "https://www.man.com/research", "scan_interval_hours": 24 },
+    { "name": "DE Shaw Research", "url": "https://www.deshaw.com/research", "scan_interval_hours": 48 },
+    { "name": "Citadel Research", "url": "https://www.citadel.com/research/", "scan_interval_hours": 48 },
+    { "name": "Renaissance Technologies (public)", "url": "https://www.rentec.com/", "scan_interval_hours": 168 }
+  ],
+  "conferences": [
+    { "name": "NeurIPS", "track": "Financial AI" },
+    { "name": "ICML", "track": "Applications" },
+    { "name": "AAAI", "track": "AI for Finance" },
+    { "name": "KDD", "track": "Finance" }
+  ]
+}

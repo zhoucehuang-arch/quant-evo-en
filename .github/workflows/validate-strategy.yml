@@ -1,0 +1,44 @@
+name: Validate Strategy
+on:
+  pull_request:
+    paths: ['strategies/candidates/**']
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install zipline-reloaded pandas numpy scipy
+
+      - name: Lint strategy code
+        run: |
+          for f in strategies/candidates/*.py; do
+            [ -f "$f" ] && python -m py_compile "$f"
+          done
+
+      - name: Run out-of-sample backtest
+        run: |
+          echo "TODO: implement backtest runner"
+          # python scripts/run_backtest.py --strategy-dir strategies/candidates/ --months 6
+
+      - name: Validate risk parameters
+        run: |
+          echo "TODO: implement risk validation"
+          # python scripts/validate_risk.py --config config/risk-params.json
+
+      - name: Auto-promote to staging
+        if: success()
+        run: |
+          for f in strategies/candidates/*.py; do
+            [ -f "$f" ] && cp "$f" strategies/staging/
+          done
+          git config user.name "quant-evo-bot"
+          git config user.email "bot@quant-evo.local"
+          git add strategies/staging/
+          git commit -m "ci: promote validated strategies to staging" || true
+          git push || true

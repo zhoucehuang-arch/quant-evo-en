@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "updated_at": "2026-02-23T00:00:00Z",
+  "portfolio": {
+    "max_total_exposure": 0.80,
+    "max_single_position": 0.05,
+    "max_single_asset": 0.10,
+    "max_daily_trades": 50,
+    "min_signal_confidence": 0.50,
+    "cash_reserve": 0.20
+  },
+  "risk_limits": {
+    "daily_pnl_warning": -0.03,
+    "daily_pnl_critical": -0.05,
+    "daily_pnl_halt": -0.08,
+    "strategy_dd_warning": -0.10,
+    "strategy_dd_critical": -0.15,
+    "strategy_dd_halt": -0.20,
+    "var95_warning": 0.03,
+    "var95_critical": 0.05,
+    "var95_halt": 0.08,
+    "correlation_warning": 0.50,
+    "correlation_critical": 0.70,
+    "concentration_warning": 0.08,
+    "concentration_critical": 0.12,
+    "concentration_halt": 0.15
+  },
+  "promotion": {
+    "staging_min_days": 5,
+    "staging_min_sharpe": 0.30,
+    "staging_max_drawdown": 0.20
+  }
+}

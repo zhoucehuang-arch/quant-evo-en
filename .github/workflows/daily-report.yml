@@ -1,0 +1,27 @@
+name: Daily Report
+on:
+  schedule:
+    - cron: '0 22 * * 1-5'  # 每个交易日 22:00 UTC (美东 17:00)
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate daily report
+        run: |
+          echo "TODO: implement daily report aggregation"
+          # python scripts/daily_report.py --metrics-dir trading/metrics/daily/
+
+      - name: Commit report
+        run: |
+          git config user.name "quant-evo-bot"
+          git config user.email "bot@quant-evo.local"
+          git add trading/metrics/ || true
+          git commit -m "report: daily $(date +%Y-%m-%d)" || true
+          git push || true
