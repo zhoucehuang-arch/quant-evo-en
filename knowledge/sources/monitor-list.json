@@ -1,24 +1,98 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "updated_at": "2026-02-23T00:00:00Z",
-  "arxiv": {
-    "categories": ["q-fin.CP", "q-fin.PM", "q-fin.TR", "q-fin.ST", "q-fin.RM", "cs.AI", "cs.LG", "cs.MA"],
-    "rss_base": "https://rss.arxiv.org/rss/",
-    "scan_interval_hours": 6
+  "academic": {
+    "arxiv": {
+      "categories": ["q-fin.CP", "q-fin.PM", "q-fin.TR", "q-fin.ST", "q-fin.RM", "cs.AI", "cs.LG", "cs.MA"],
+      "rss_base": "https://rss.arxiv.org/rss/",
+      "scan_interval_hours": 6
+    },
+    "ssrn": {
+      "categories": ["Quantitative Finance", "Financial Economics"],
+      "scan_interval_hours": 12
+    }
   },
-  "ssrn": {
-    "categories": ["Quantitative Finance", "Financial Economics"],
-    "scan_interval_hours": 12
-  },
-  "blogs": [
+  "industry_blogs": [
     { "name": "AQR Capital", "url": "https://www.aqr.com/Insights", "scan_interval_hours": 24 },
     { "name": "Two Sigma Insights", "url": "https://www.twosigma.com/insights/", "scan_interval_hours": 24 },
     { "name": "Man Group Research", "url": "https://www.man.com/research", "scan_interval_hours": 24 },
     { "name": "DE Shaw Research", "url": "https://www.deshaw.com/research", "scan_interval_hours": 48 },
-    { "name": "Citadel Research", "url": "https://www.citadel.com/research/", "scan_interval_hours": 48 },
-    { "name": "Renaissance Technologies (public)", "url": "https://www.rentec.com/", "scan_interval_hours": 168 }
+    { "name": "Citadel Research", "url": "https://www.citadel.com/research/", "scan_interval_hours": 48 }
   ],
-  "conferences": [
+  "alternative_data": {
+    "politician_trading": {
+      "sources": [
+        { "name": "Capitol Trades", "url": "https://www.capitoltrades.com/", "scan_interval_hours": 4 },
+        { "name": "Quiver Quantitative", "url": "https://www.quiverquant.com/congresstrading/", "scan_interval_hours": 4 },
+        { "name": "Senate Stock Watcher", "url": "https://senatestockwatcher.com/", "scan_interval_hours": 6 },
+        { "name": "House Stock Watcher", "url": "https://housestockwatcher.com/", "scan_interval_hours": 6 }
+      ],
+      "priority": "high",
+      "signal_type": "insider_following",
+      "notes": "Focus on committee-relevant trades, cluster buys, large positions relative to net worth"
+    },
+    "corporate_insider": {
+      "sources": [
+        { "name": "OpenInsider", "url": "http://openinsider.com/", "scan_interval_hours": 4 },
+        { "name": "SEC EDGAR Form 4", "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4&dateb=&owner=include&count=40", "scan_interval_hours": 6 }
+      ],
+      "priority": "high",
+      "signal_type": "insider_following",
+      "notes": "Focus on cluster buys (3+ insiders in 30d), CEO/CFO open-market purchases, buys during price weakness"
+    },
+    "unusual_options": {
+      "sources": [
+        { "name": "Unusual Whales", "url": "https://unusualwhales.com/", "scan_interval_hours": 2 },
+        { "name": "Barchart Unusual Options", "url": "https://www.barchart.com/options/unusual-activity/stocks", "scan_interval_hours": 2 }
+      ],
+      "priority": "high",
+      "signal_type": "options_flow",
+      "notes": "Focus on large premium sweeps >$500K, call/put ratio spikes, short-dated OTM calls with high volume"
+    },
+    "dark_pool": {
+      "sources": [
+        { "name": "FINRA ATS Data", "url": "https://otctransparency.finra.org/otctransparency/AtsData", "scan_interval_hours": 24 }
+      ],
+      "priority": "medium",
+      "signal_type": "options_flow",
+      "notes": "Focus on large block trades at premium, sustained dark pool buying, flow-price divergence"
+    }
+  },
+  "events": {
+    "earnings": {
+      "sources": [
+        { "name": "Earnings Whispers", "url": "https://www.earningswhispers.com/", "scan_interval_hours": 12 },
+        { "name": "Yahoo Finance Earnings Calendar", "url": "https://finance.yahoo.com/calendar/earnings/", "scan_interval_hours": 12 }
+      ],
+      "priority": "high",
+      "lookahead_days": 5
+    },
+    "conferences_launches": {
+      "sources": [
+        { "name": "Company IR Calendars", "scan_interval_hours": 24 },
+        { "name": "Tech Conference Calendar (CES, WWDC, GTC, etc.)", "scan_interval_hours": 168 }
+      ],
+      "priority": "medium"
+    },
+    "macro": {
+      "sources": [
+        { "name": "FOMC Calendar", "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm", "scan_interval_hours": 168 },
+        { "name": "Economic Calendar", "url": "https://www.investing.com/economic-calendar/", "scan_interval_hours": 12 }
+      ],
+      "priority": "high"
+    }
+  },
+  "sentiment": {
+    "social": [
+      { "name": "Reddit WSB", "subreddit": "wallstreetbets", "scan_interval_hours": 4 },
+      { "name": "Reddit Stocks", "subreddit": "stocks", "scan_interval_hours": 6 },
+      { "name": "StockTwits", "url": "https://stocktwits.com/", "scan_interval_hours": 4 }
+    ],
+    "news": [
+      { "name": "Financial News Aggregator (via SearXNG)", "scan_interval_hours": 2 }
+    ]
+  },
+  "conferences_academic": [
     { "name": "NeurIPS", "track": "Financial AI" },
     { "name": "ICML", "track": "Applications" },
     { "name": "AAAI", "track": "AI for Finance" },

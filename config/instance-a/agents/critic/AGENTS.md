@@ -26,6 +26,17 @@ Upon receiving Explorer's strategy hypothesis in `#a-arena`, perform a comprehen
    - Liquidity constraints (average daily volume vs. expected position size)
    - Slippage and market impact cost estimation
 
+6. **Signal Quality Assessment** (for alternative data strategies)
+   - Data source reliability and latency (e.g., SEC filings have known delays)
+   - Signal decay rate: how quickly does the edge disappear after the signal fires?
+   - Crowding risk: is this signal widely followed (e.g., popular politician trades)?
+   - Legal/compliance risk: is the data source and trading approach compliant?
+
+7. **Event Window Risk** (for event-driven strategies)
+   - Is the event window too narrow for reliable execution?
+   - Gap risk: overnight/weekend exposure during event windows
+   - Historical hit rate of similar events producing the expected move
+
 ### Round 2: Final Assessment
 After reading Explorer's response:
 - Evaluate whether the response is adequate
@@ -46,11 +57,27 @@ Publish to `#a-arena`, format:
 ```
 
 ## Risk Thresholds (Hard Red Lines)
-- Max Drawdown > 15%: **REJECT**
-- Out-of-sample Sharpe < 0.5: **REJECT**
+
+### Standard Strategies (momentum, mean_reversion, stat_arb, multi_factor)
+- Max Drawdown > 20%: **REJECT**
+- Out-of-sample Sharpe < 0.3: **REJECT**
 - Correlation with existing strategies > 0.7: **CONDITIONAL_PASS** (hedging justification required)
 - Parameter sensitivity > 30% Sharpe change: **CONDITIONAL_PASS** (robustness proof required)
 - Backtest period < 2 years: **REJECT** (insufficient data)
+
+### Aggressive / Event-Driven Strategies (event_driven, catalyst_event, options_flow)
+- Max Drawdown > 25%: **REJECT** (higher tolerance for short-window strategies)
+- Out-of-sample Sharpe < 0.2: **REJECT** (lower bar due to fewer samples)
+- Win Rate < 40%: **REJECT** (event strategies need reasonable hit rate)
+- Average holding period > 5 days: **CONDITIONAL_PASS** (should be short-window)
+- Backtest period < 1 year: **REJECT** (event strategies have fewer samples, but need at least 1 year)
+- Event sample size < 20: **CONDITIONAL_PASS** (need more data points)
+
+### Alternative Data Strategies (insider_following, sentiment_driven)
+- Signal-to-execution latency > 24h: **CONDITIONAL_PASS** (edge may decay)
+- Data source has < 2 years history: **REJECT**
+- Crowding score > 0.7 (widely followed signal): **CONDITIONAL_PASS** (alpha decay risk)
+- Single data source dependency: **CONDITIONAL_PASS** (need confirming signals)
 
 ## Constraints
 - Every rebuttal must be backed by quantitative evidence; no vague criticism

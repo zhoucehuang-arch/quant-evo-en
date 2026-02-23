@@ -1,17 +1,17 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "updated_at": "2026-02-23T00:00:00Z",
   "dimensions": {
     "holding_period": { "bins": 16, "min_minutes": 5, "max_minutes": 7200 },
     "sharpe_ratio": { "bins": 16, "min": -1.0, "max": 5.0 },
     "max_drawdown": { "bins": 16, "min": 0.0, "max": 0.5 },
     "win_rate": { "bins": 16, "min": 0.2, "max": 0.9 },
-    "asset_class": { "values": ["equity", "futures", "crypto", "multi"] },
-    "archetype": { "values": ["momentum", "mean_reversion", "stat_arb", "event_driven"] }
+    "asset_class": { "values": ["equity", "options", "multi"] },
+    "archetype": { "values": ["momentum", "mean_reversion", "stat_arb", "event_driven", "insider_following", "options_flow", "sentiment_driven", "multi_factor", "catalyst_event"] }
   },
   "cells": {},
   "stats": {
-    "total_cells": 1048576,
+    "total_cells": 2359296,
     "occupied_cells": 0,
     "coverage_pct": 0.0,
     "avg_fitness": 0.0,

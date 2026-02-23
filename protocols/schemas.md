@@ -21,7 +21,15 @@ Free-form messages are only allowed in the `#admin` channel (human-agent interac
     "max_drawdown": 0.10,
     "win_rate": 0.55,
     "asset_class": "equity",
-    "archetype": "momentum"
+    "archetype": "momentum | mean_reversion | stat_arb | event_driven | insider_following | options_flow | sentiment_driven | multi_factor | catalyst_event"
+  },
+  "signal_sources": ["technical", "insider", "options_flow", "sentiment", "event", "fundamental"],
+  "entry_trigger": "Specific condition that triggers entry",
+  "exit_trigger": "Specific condition that triggers exit",
+  "confluence_score": {
+    "confirming_signals": ["signal_1", "signal_2"],
+    "conflicting_signals": [],
+    "confidence_cap": 0.75
   },
   "evidence": ["Reference 1", "Reference 2"],
   "parent_strategy_id": "seed_momentum_rsi_v1",
@@ -40,7 +48,10 @@ Free-form messages are only allowed in the `#admin` channel (human-agent interac
     "tail_risk": 0.3,
     "overfitting": 0.4,
     "execution_risk": 0.2,
-    "correlation_risk": 0.5
+    "correlation_risk": 0.5,
+    "signal_decay": 0.3,
+    "crowding_risk": 0.2,
+    "event_window_risk": 0.0
   },
   "conditions": ["Position must not exceed 3% of portfolio"],
   "fatal_flaws": [],
@@ -78,7 +89,10 @@ Free-form messages are only allowed in the `#admin` channel (human-agent interac
     "max_drawdown": 0.08,
     "win_rate": 0.57,
     "total_trades": 142,
-    "profit_factor": 1.8
+    "profit_factor": 1.8,
+    "avg_holding_minutes": 120,
+    "signal_decay_rate": 0.02,
+    "event_hit_rate": null
   },
   "feature_map_cell": [3, 5, 2, 4, 0, 1],
   "feature_map_updated": true,
@@ -172,10 +186,15 @@ Free-form messages are only allowed in the `#admin` channel (human-agent interac
   "limit_price": 185.50,
   "confidence": 0.85,
   "reason": "RSI oversold bounce + MACD golden cross",
+  "signal_sources": ["technical", "options_flow"],
   "risk_params": {
     "stop_loss_pct": -0.03,
     "take_profit_pct": 0.06,
-    "max_position_pct": 0.05
+    "trailing_stop_trigger_pct": 0.03,
+    "trailing_stop_distance_pct": 0.015,
+    "max_position_pct": 0.05,
+    "max_holding_days": null,
+    "exit_before_event": null
   }
 }
 ```
