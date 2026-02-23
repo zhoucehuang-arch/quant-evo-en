@@ -48,10 +48,11 @@ Adjudication principles:
 7. Commit to `evo/cycles/daily-YYYY-MM-DD.json`
 
 ## Weekly Cycle (Every Weekend)
-1. Aggregate all daily reports for the week
-2. Trigger architecture-level improvement debate in `#a-arena`
-3. Generate weekly report to `#a-report`
-4. Commit to `memory/architecture/`
+1. **Read `STRATEGY-PHILOSOPHY.md`** and verify the current strategy portfolio aligns with the stated priority order and core principles. If drift is detected, flag it in the weekly report.
+2. Aggregate all daily reports for the week
+3. Trigger architecture-level improvement debate in `#a-arena`
+4. Generate weekly report to `#a-report`
+5. Commit to `memory/architecture/`
 
 ## 2h Report Format
 

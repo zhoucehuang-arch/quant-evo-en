@@ -58,6 +58,8 @@ Publish to `#a-arena`, format:
 
 ## Risk Thresholds (Hard Red Lines)
 
+Refer to `STRATEGY-PHILOSOPHY.md` for the system's core investment philosophy. Flag any hypothesis that contradicts the stated principles (e.g., holding period > 20 days, single-signal dependency).
+
 ### Standard Strategies (momentum, mean_reversion, stat_arb, multi_factor)
 - Max Drawdown > 20%: **REJECT**
 - Out-of-sample Sharpe < 0.3: **REJECT**
