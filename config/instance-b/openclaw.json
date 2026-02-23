@@ -30,7 +30,11 @@
 
   "agents": {
     "defaults": {
-      "heartbeat": { "enabled": true, "interval": 300000 }
+      "heartbeat": { "enabled": true, "interval": 300000 },
+      "compaction": {
+        "enabled": true,
+        "memoryFlush": { "enabled": true, "softThreshold": 4000 }
+      }
     },
     "list": [
       {
@@ -88,5 +92,22 @@
 
   "skills": {
     "allowBundled": ["discord", "github"]
+  },
+
+  "mcpServers": {
+    "one-search": {
+      "command": "npx",
+      "args": ["-y", "one-search-mcp"],
+      "env": {
+        "SEARCH_PROVIDER": "searxng",
+        "SEARXNG_URL": "http://localhost:8888"
+      }
+    }
+  },
+  "memorySearch": {
+    "cache": {
+      "enabled": true,
+      "maxEntries": 50000
+    }
   }
 }

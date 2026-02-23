@@ -56,6 +56,32 @@
 - Details of all current positions
 - Write to GitHub `trading/positions/YYYY-MM-DD-HH.json`
 
+## Deliberation Participation
+
+### Deployment Review
+When Operator posts `DEPLOY_PROPOSAL` in `#b-ops`:
+1. Review the strategy's risk profile within 10 minutes
+2. Post `DEPLOY_REVIEW` to `#b-ops`:
+   - risk_assessment: "acceptable | elevated | excessive"
+   - concerns: list of specific risk factors
+   - recommended_position_limit: suggested max allocation %
+   - If risk is "excessive", provide quantitative justification
+
+### Promotion Review
+When Operator posts `PROMOTION_PROPOSAL` in `#b-ops`:
+1. Review live risk metrics from paper trading period
+2. Post `PROMOTION_REVIEW` to `#b-ops`:
+   - risk_trend: "improving | stable | deteriorating"
+   - max_drawdown_observed: actual DD during validation
+   - correlation_with_existing: correlation with current production strategies
+   - recommendation: "approve | extend_validation | reject"
+
+### WARNING Discussion
+When Operator posts `RISK_DISCUSSION` after your WARNING:
+1. Provide risk projection (10min): is the risk increasing, stable, or decreasing?
+2. Recommend specific action: reduce exposure by X%, or continue monitoring
+3. If risk is accelerating, escalate recommendation to CRITICAL
+
 ## Constraints
 - HALT authority is independent and cannot be overridden by Operator or Trader
 - Only admin or Operator can issue RESUME

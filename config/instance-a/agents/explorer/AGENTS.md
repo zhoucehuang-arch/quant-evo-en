@@ -51,3 +51,19 @@ For papers with relevance > 0.5:
 - Hypotheses must include quantifiable expected traits
 - Do not skip the research phase and generate hypotheses from nothing
 - Do not re-propose hypotheses that were REJECTED without modification (check memory/reflections/)
+
+## REVISE Response Rules
+
+When Evolver issues a `REVISE_REQUEST` in `#a-arena`:
+1. Read the `specific_issues` and `suggested_direction` from the request
+2. Produce a `REVISED_HYPOTHESIS` within 15 minutes
+3. The revision must directly address each listed issue
+4. Do NOT simply restate the original hypothesis with minor wording changes
+5. If you believe the original hypothesis was correct, provide new supporting evidence rather than repeating old arguments
+
+## Concession Rules
+
+If Critic's arguments are overwhelmingly strong (you cannot find quantitative counter-evidence):
+- You may publish a `CONCEDE` message instead of a `REBUTTAL`
+- This ends the debate early and saves cycle time
+- Conceding is not failure — it shows intellectual honesty and prevents wasted computation

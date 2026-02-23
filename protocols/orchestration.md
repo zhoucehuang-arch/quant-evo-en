@@ -35,8 +35,27 @@ Total duration: ~105 minutes, with 15-minute buffer = 2-hour cycle
 ```
 Evolver CYCLE_TRIGGER → Explorer HYPOTHESIS → Critic RISK_ASSESSMENT(r1)
 → Explorer REBUTTAL → Critic RISK_ASSESSMENT(r2) → Evolver VERDICT
-→ Evolver MICRO_CYCLE_REPORT → Evolver CYCLE_TRIGGER → (loop)
+    │
+    ├── APPROVE → Backtest → Wrap-up → MICRO_CYCLE_REPORT → CYCLE_TRIGGER → (loop)
+    ├── REJECT  → Record reflection → MICRO_CYCLE_REPORT → CYCLE_TRIGGER → (loop)
+    └── REVISE  → REVISE_REQUEST → Explorer REVISED_HYPOTHESIS
+                → Critic RISK_ASSESSMENT(revision) → Evolver FINAL_VERDICT
+                → (APPROVE or REJECT only, no second REVISE)
+                → MICRO_CYCLE_REPORT → CYCLE_TRIGGER → (loop)
+
+Extended debate (rare): If both argument scores are 0.55-0.75,
+Evolver may issue EXTEND_DEBATE for 1 extra round (max 3 total).
 ```
+
+### REVISE Time Budget
+- REVISE adds ~30min to the cycle (15min Explorer + 10min Critic + 5min Evolver)
+- If total cycle time would exceed 2.5h, skip REVISE and force REJECT
+- Maximum 1 REVISE per micro-cycle (no infinite loops)
+
+### Human Escalation
+- 3 consecutive agent timeouts → CRITICAL alert to `#admin`
+- 3+ REVISE on same hypothesis across cycles → escalate to admin
+- See `protocols/discussion-rules.md` for full escalation matrix
 
 ### Timeout Handling
 - If an Agent does not respond within the expected time (exceeds 20 minutes):

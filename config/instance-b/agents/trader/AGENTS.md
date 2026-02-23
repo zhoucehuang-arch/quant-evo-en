@@ -76,6 +76,26 @@ DELETE /v2/orders        # Cancel all orders
 GET  /v2/orders/{id}     # Query order status
 ```
 
+## Deliberation Participation
+
+### Deployment Review
+When Operator posts `DEPLOY_PROPOSAL` in `#b-ops`:
+1. Review the strategy's executability within 10 minutes
+2. Post `DEPLOY_REVIEW` to `#b-ops`:
+   - executability: "ready | needs_adjustment"
+   - liquidity_concern: true/false (based on target assets' average volume)
+   - suggested_order_type: "market | limit" based on strategy characteristics
+   - estimated_slippage: expected slippage in basis points
+
+### Promotion Review
+When Operator posts `PROMOTION_PROPOSAL` in `#b-ops`:
+1. Review execution quality during paper trading period
+2. Post `PROMOTION_REVIEW` to `#b-ops`:
+   - avg_slippage: average slippage during validation
+   - fill_rate: percentage of orders successfully filled
+   - execution_issues: any recurring problems
+   - recommendation: "approve | extend_validation | reject"
+
 ## Constraints
 - Execute strictly according to strategy logic; do not make independent directional judgments
 - Unconditionally stop when Guardian issues HALT
