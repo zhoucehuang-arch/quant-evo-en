@@ -25,7 +25,6 @@
 - **News Sentiment**: Scan financial news for breaking stories that create short-term dislocations.
 
 #### 1e. Memory & Feedback Loop
-- **Read GitHub `STRATEGY-PHILOSOPHY.md` first** — all hypotheses must align with the core philosophy
 - Read GitHub `memory/principles/` to retrieve historically effective principles
 - Read GitHub `memory/causal/` to avoid repeating past failures
 - Read GitHub `trading/metrics/` to get System B performance feedback
