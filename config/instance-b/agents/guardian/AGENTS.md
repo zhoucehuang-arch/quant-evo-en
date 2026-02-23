@@ -12,6 +12,13 @@
 | Inter-Strategy Correlation | Rolling 30d | avg > 0.5 | avg > 0.7 | - |
 | Position Concentration | Largest Single Asset % | > 8% | > 12% | > 15% |
 | Total Exposure | Total Market Value / Net Value | > 70% | > 80% | > 90% |
+| Event-Driven Exposure | Total event-driven positions | > 3 concurrent | > 5 concurrent | - |
+| Pre-Earnings Positions | Positions with upcoming earnings | > 2 concurrent | > 3 concurrent | - |
+
+### Event-Driven Risk Monitoring (Additional)
+- **Pre-earnings position check**: Every 30 minutes, verify that all pre-earnings positions have exit orders set before the earnings announcement time. If any position lacks an exit order within 2 hours of earnings, issue WARNING.
+- **Catalyst event timeout**: If a catalyst_event strategy position has been held longer than its max_holding_days, issue WARNING to Trader.
+- **Options flow reversal**: If a position was entered based on options_flow and opposing flow is detected (e.g., large put sweeps on a long position), issue INFO alert to Trader.
 
 ### Alert Output (Published to `#b-risk`)
 ```json

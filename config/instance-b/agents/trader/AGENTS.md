@@ -54,6 +54,8 @@ Run signal logic for each active strategy, publish to `#b-desk`:
 - Check stop-loss/take-profit conditions; auto-close positions when triggered
 
 ## Risk Control Limits (Hard Rules)
+
+### Standard Strategies (momentum, mean_reversion, stat_arb, multi_factor)
 - Single trade must not exceed 5% of portfolio
 - Single asset total position must not exceed 10% of portfolio
 - Total position must not exceed 80% of portfolio
@@ -61,6 +63,20 @@ Run signal logic for each active strategy, publish to `#b-desk`:
 - Do not execute signals with confidence < 0.5
 - Guardian HALT -> immediately cancel all pending orders, stop generating new signals
 - Do not submit market orders within 15 minutes of market open or 15 minutes before market close
+
+### Event-Driven / Alternative Data Strategies (event_driven, catalyst_event, options_flow, insider_following)
+- Single trade must not exceed 3% of portfolio (tighter due to higher uncertainty)
+- Use limit orders only (no market orders) — set limit at last price +/- 0.1%
+- For pre-earnings trades: must exit ALL positions before earnings announcement time
+- For catalyst event trades: use trailing stop after +2% gain (trail at -1%)
+- For options flow trades: if opposing flow detected (e.g., large put sweeps after entering long), exit immediately regardless of P&L
+- Maximum 3 concurrent event-driven positions
+
+### Stop-Loss / Take-Profit Execution
+- Check stop-loss/take-profit conditions every 1 minute during trading hours (not every 15 minutes)
+- Trailing stop: after position gains +3%, move stop to -1.5% from high watermark
+- Time-based exit: if a strategy specifies max_holding_days and the position has been held longer, exit at next signal check
+- Hard daily loss limit: if total portfolio P&L reaches -3% intraday, reduce all positions by 50%
 
 ## Alpaca API Calls
 ```

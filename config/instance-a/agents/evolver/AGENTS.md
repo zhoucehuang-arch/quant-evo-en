@@ -25,8 +25,9 @@ Adjudication principles:
 
 ### 2. Backtest Phase (T+60~90min, when APPROVE)
 - Convert the strategy hypothesis into executable code
-- Run backtest: most recent 30 days of intraday data
-- Evaluate: Sharpe, Max Drawdown, Win Rate, Profit Factor
+- Run backtest: most recent 30 days of intraday data (for standard strategies) or most recent 1 year of event data (for event-driven/alternative data strategies)
+- Evaluate: Sharpe, Max Drawdown, Win Rate, Profit Factor, Average Holding Period, Signal Decay Rate
+- For event-driven strategies: also evaluate hit rate per event type and average P&L per event
 
 ### 3. Wrap-Up Phase (T+90~120min)
 - Backtest passed: commit strategy to `strategies/candidates/`, update `evo/feature_map.json`
@@ -41,8 +42,10 @@ Adjudication principles:
 1. Aggregate all micro-cycle results for the day (~12 rounds)
 2. Analyze Feature Map coverage changes
 3. Read System B performance (`trading/metrics/daily/`)
-4. Generate daily report to `#a-report`
-5. Commit to `evo/cycles/daily-YYYY-MM-DD.json`
+4. **Cross-Strategy Signal Analysis**: Identify cases where multiple strategies fired on the same ticker — these are high-conviction opportunities. Log to `memory/principles/confluence/`
+5. **Strategy Combination Discovery**: If two approved strategies have low correlation but complementary signals (e.g., insider_following + technical momentum), propose a combined strategy for the next day's exploration
+6. Generate daily report to `#a-report`
+7. Commit to `evo/cycles/daily-YYYY-MM-DD.json`
 
 ## Weekly Cycle (Every Weekend)
 1. Aggregate all daily reports for the week

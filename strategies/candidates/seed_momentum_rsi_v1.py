@@ -1,15 +1,15 @@
 """
-种子策略: RSI 动量反转
-这是系统冷启动的第一个策略，用于填充 Feature Map 的第一个 cell。
-后续所有策略将基于此种子进化。
+Seed Strategy: RSI Momentum Reversal
+This is the system's first cold-start strategy, used to fill the first cell of the Feature Map.
+All subsequent strategies will evolve based on this seed.
 
-策略逻辑:
-- 当 RSI(14) < 30 且价格在 20日均线之上时买入 (超卖反弹)
-- 当 RSI(14) > 70 或价格跌破 20日均线时卖出
-- 持仓周期: 30分钟 ~ 4小时 (日内)
-- 止损: -3%, 止盈: +6%
+Strategy Logic:
+- Buy when RSI(14) < 30 AND price is above 20-day SMA (oversold bounce)
+- Sell when RSI(14) > 70 OR price drops below 20-day SMA
+- Holding period: 30 minutes ~ 4 hours (intraday)
+- Stop-loss: -3%, Take-profit: +6%
 
-Feature Map 定位:
+Feature Map Position:
 - holding_period: 30min~4h (bin ~4)
 - target_sharpe: 1.0~1.5
 - max_drawdown: < 10%
@@ -26,6 +26,7 @@ STRATEGY_META = {
     "asset_class": "equity",
     "holding_period_minutes": [30, 240],
     "symbols": ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA"],
+    "signal_sources": ["technical"],
     "params": {
         "rsi_period": 14,
         "rsi_oversold": 30,
@@ -39,7 +40,7 @@ STRATEGY_META = {
 
 
 def compute_rsi(prices, period=14):
-    """计算 RSI 指标"""
+    """Calculate RSI indicator."""
     deltas = [prices[i] - prices[i - 1] for i in range(1, len(prices))]
     gains = [d if d > 0 else 0 for d in deltas]
     losses = [-d if d < 0 else 0 for d in deltas]
@@ -58,7 +59,7 @@ def compute_rsi(prices, period=14):
 
 
 def compute_sma(prices, period=20):
-    """计算简单移动平均"""
+    """Calculate simple moving average."""
     if len(prices) < period:
         return None
     return sum(prices[-period:]) / period
@@ -66,11 +67,11 @@ def compute_sma(prices, period=20):
 
 def generate_signal(bars, params=None):
     """
-    生成交易信号
+    Generate trading signal.
 
     Args:
         bars: list of dicts with keys: timestamp, open, high, low, close, volume
-        params: 策略参数 (默认使用 STRATEGY_META["params"])
+        params: strategy parameters (defaults to STRATEGY_META["params"])
 
     Returns:
         dict: { action: BUY|SELL|HOLD, confidence: float, reason: str }
@@ -79,7 +80,7 @@ def generate_signal(bars, params=None):
         params = STRATEGY_META["params"]
 
     if len(bars) < max(params["rsi_period"] + 1, params["sma_period"]):
-        return {"action": "HOLD", "confidence": 0.0, "reason": "数据不足"}
+        return {"action": "HOLD", "confidence": 0.0, "reason": "Insufficient data"}
 
     closes = [b["close"] for b in bars]
     current_price = closes[-1]
@@ -88,30 +89,30 @@ def generate_signal(bars, params=None):
     sma = compute_sma(closes, params["sma_period"])
 
     if sma is None:
-        return {"action": "HOLD", "confidence": 0.0, "reason": "SMA 数据不足"}
+        return {"action": "HOLD", "confidence": 0.0, "reason": "Insufficient SMA data"}
 
-    # 买入条件: RSI 超卖 + 价格在均线之上
+    # Buy condition: RSI oversold + price above SMA
     if rsi < params["rsi_oversold"] and current_price > sma:
         confidence = min(0.9, (params["rsi_oversold"] - rsi) / params["rsi_oversold"] + 0.5)
         return {
             "action": "BUY",
             "confidence": round(confidence, 2),
-            "reason": f"RSI={rsi:.1f} 超卖反弹, 价格 {current_price:.2f} > SMA{params['sma_period']} {sma:.2f}",
+            "reason": f"RSI={rsi:.1f} oversold bounce, price {current_price:.2f} > SMA{params['sma_period']} {sma:.2f}",
         }
 
-    # 卖出条件: RSI 超买 或 价格跌破均线
+    # Sell condition: RSI overbought or price below SMA
     if rsi > params["rsi_overbought"]:
         return {
             "action": "SELL",
             "confidence": 0.8,
-            "reason": f"RSI={rsi:.1f} 超买, 获利了结",
+            "reason": f"RSI={rsi:.1f} overbought, take profit",
         }
 
-    if current_price < sma * 0.99:  # 跌破均线 1%
+    if current_price < sma * 0.99:  # 1% below SMA
         return {
             "action": "SELL",
             "confidence": 0.7,
-            "reason": f"价格 {current_price:.2f} 跌破 SMA{params['sma_period']} {sma:.2f}",
+            "reason": f"Price {current_price:.2f} broke below SMA{params['sma_period']} {sma:.2f}",
         }
 
-    return {"action": "HOLD", "confidence": 0.0, "reason": f"RSI={rsi:.1f}, 无信号"}
+    return {"action": "HOLD", "confidence": 0.0, "reason": f"RSI={rsi:.1f}, no signal"}
